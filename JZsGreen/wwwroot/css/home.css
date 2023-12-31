@@ -1,0 +1,218 @@
+﻿.category-dropitem {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+#activeCart {
+    display: none;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    border: 0.5px green solid;
+    margin-top: 8px;
+}
+    #activeCart .minus {
+        float: left;
+        background: green;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        padding: 1px 10px 1px 10px;
+        font-size: 16px;
+    }
+    #activeCart .plus {
+        float: right;
+        background: green;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        padding: 1px 8px 1px 8px;
+        font-size: 16px;
+    }
+    .category-dropitem:hover {
+        background: #198754;
+        color: white;
+        border-radius:5px;
+    }
+
+.product-discount {
+    padding: 5px;
+    font-weight: bold;
+    font-size:13px;
+    border-radius: 0 5px 0 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: white;
+    background: #e54747;
+}
+
+.vnd {
+    font-size: 1rem
+}
+
+
+.price-undiscounted {
+    font-size: 1rem;
+    text-decoration: line-through;
+    color: #929292;
+    margin-right: 5px;
+}
+
+.select-order {
+    border-radius: 5px;
+    border: 1px green solid;
+}
+    .select-order:hover {
+        background: #198754;
+        color: white;
+        transition: 0.3s;
+    }
+.body-right {
+    background: white;
+    border-radius: 5px;
+    padding: 0 10px 0 10px;
+}
+
+#card-pro {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+    padding: 8px;
+    text-decoration: none;
+    color: black;
+    height: 90%;
+    transition: 0.3s;
+    box-shadow: 0 0.05rem 2px 0 rgba(0, 0, 0, .2);
+}
+
+#card-pro:hover {
+    box-shadow: 0 0.625rem 20px 0 rgba(0, 0, 0, .2);
+    cursor: pointer;
+    color: black;
+    transition: 0.3s;
+}
+
+
+.home-header {
+    margin: -20px 0 10px 0;
+    text-align:center;
+}
+
+.inputSearch {
+    justify-content: center;
+}
+
+.item-cart {
+    background: #006d19;
+    border-radius: 5px;
+    padding: 10px;
+    position: fixed;
+    bottom:50px;
+    right:20px;
+    z-index:1;
+}
+.hide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-weight: bold;
+    color: white;
+    padding: 5px 10px 5px 10px;
+    font-size: 13px;
+    border-radius: 5px 0 5px 0;
+}
+#activeBarPro {
+    display: none;
+    background: #00000012;
+}
+#bar-pro {
+    background: white;
+    height: 100%;
+    border-radius:5px;
+    padding:20px;
+}
+#unActiveBarPro {
+    display: none;
+    background: #00000012;
+    margin: inherit;
+}
+.dropdown-header {
+    font-weight: bold;
+    font-size: 15px;
+}
+@media(max-width:767px) {
+    discount-menu{
+        display:contents;
+        width:auto;
+    }
+    .category-dropitem {
+        display: inline;
+        width:auto;
+    }
+    #bar-pro {
+        display: none;
+        height: auto;
+        margin: 0 -7px 0 -7px;
+    }
+    #activeBarPro {
+        display: block;
+    }
+}
+.title-discount {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    background: #198754;
+    border-radius: 0 0px 100px 100px;
+    margin-bottom:30px;
+    width:65%;
+    padding:10px 0 2px 0;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+
+}
+.centertitle{
+    width:100%;
+}
+.linkList {
+    width: 100%;
+    color:black;
+    font-weight:bold;
+    background: #00000012;
+}
+#ui-id-1 {
+    z-index: 9999;
+    position:fixed;
+}
+
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+    background: #198754 !important;
+    font-weight: bold !important;
+    color: white !important;
+    border: 1px solid ;
+}
+#space-footer {
+    height: 330px;
+}
+
+@media (max-width:770px) {
+    #space-footer {
+        height: 550px;
+    }
+}

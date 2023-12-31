@@ -1,0 +1,41 @@
+﻿@model IEnumerable<JZsGreen.Models.CategoryChild>
+
+@{
+    ViewData["Title"] = "Danh Mục Nhỏ";
+}
+
+<h1>Các Danh Mục Nhỏ</h1>
+
+<p>
+    <a asp-action="Create" class="btn bg-success" style="color:white">Thêm Sản Danh Mục Nhỏ?</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category!.name)
+                </td>
+                <td>
+                    <a class="btn bg-danger" style="color:white" asp-action="Edit" asp-route-id="@item.Id">Cập Nhật</a>
+                    <a class="btn bg-black" style="color:white" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

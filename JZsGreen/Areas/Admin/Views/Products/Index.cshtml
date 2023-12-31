@@ -1,0 +1,97 @@
+﻿@model IEnumerable<JZsGreen.Models.Product>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Trang Danh Sách";
+}
+
+<h1>
+    Danh Sách Sản Phẩm
+</h1>
+
+<table id="example" class="table bg-white" style="width:100%">
+    <thead>
+        <tr class="text-nowrap">
+            <th>
+                @Html.DisplayNameFor(model => model.dateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.discount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.totalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isActive)
+            </th>
+            <th class="text-center">
+                <a asp-action="Create" class="btn bg-dark" style="color:white">Thêm Sản Phẩm</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dateCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quantity) @Html.DisplayFor(modelItem => item.unit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.price)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.discount)%
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.totalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category!.name)
+                </td>
+                @if(item.quantity != 0)
+                {
+                    @if (item.isActive == true)
+                    {
+                        <td>Mở Bán<button data-productid="@item.Id" id="update-isActive"><i class="fa fa-thumbs-o-up"></i></button></td>
+                    }
+                    else
+                    {
+                        <td>Ngưng Bán<button data-productid="@item.Id" id="update-isActive"><i class="fa fa-thumbs-o-down"></i></button></td>
+                    }
+                }
+                else
+                {
+                    <td>Hết Hàng</td>
+                }
+                <td class="text-center">
+                    <a class="btn bg-danger" style="color:white" asp-action="Edit" asp-route-id="@item.Id">Cập Nhật</a>
+                   <!--
+                         <form asp-action="Delete" style="float:right">
+                         <input type="hidden" asp-for="Id" />
+                         <input type="submit" value="Delete" class="btn btn-danger" />
+                     </form>
+                       <a class="btn bg-black" style="color:white" href="#" >Xóa</a>
+                   -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,59 @@
+﻿@model List<JZsGreen.Models.Product>
+@{
+    var products = Model.Where(e => e.discount > 0).OrderByDescending(e => e.discount).ToList();
+    int count = 0;
+}
+@if (products.Count != 0)
+{
+    <div class="body-right">
+        <div class="title-discount">HÀNG GIẢM GIÁ</div>
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-3 row-cols-lg-3 row-cols-xl-6 g-4 g-2">
+            @foreach (var item in products)
+            {
+                count++;
+                @if (count < 7)
+                {
+                    <div class="col-md-4">
+                        <a id="card-pro" href="/SanPham/@item.Id" title="@item.name">
+                            @for (int i = 0; i < 1; i++)
+                            {
+                                <img src="/images/products/@item.images![i].fileName" class="card-img-top" style="padding:25px" alt="Sản phẩm">
+                                if (item.discount != 0)
+                                {
+                                    <div class="product-discount">-@item.discount%</div>
+                                }
+                            }
+                            <div class="card-body" style="padding: 0">
+                                <h5 class="card-title">@item.name</h5>
+                                <div>@item.summary</div>
+                            </div>
+                            <div class="price">
+                                @if (item.discount != 0)
+                                {
+                                    <span class="price-undiscounted"><span class="vnd">₫</span>@Html.DisplayFor(model=>item.price)</span>
+                                }
+                                <strong style="color:red;"><span class="vnd">₫</span>@Html.DisplayFor(model => item.totalPrice)</strong>
+                            </div>
+                            <div class="hide"></div>
+                        </a>
+                        @if (!User.IsInRole("Admin"))
+                        {
+                            <a id="addcart" data-id="@item.Id" class="btn select-order @item.Id" style="width:100%; margin-top:8px;">CHỌN MUA</a>
+                            <div id="activeCart" data-id="@item.Id" class="col">
+                                <a class="minus updatecartitem" data-productid="@item.Id">-</a>
+                                <input type="text" class="itemCount" style="width:50%; background:white; border:none; font-size:18px; text-align:center; padding:0;" disabled id="@($"quantity-{item.Id}")" />
+                                <a class="plus updatecartitem" data-productid="@item.Id">+</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="btn select-order @item.Id" style="width:100%; margin-top:8px;">CHỌN MUA</a>
+                        }
+                    </div>
+                }
+            }
+        </div>
+        <div style="height:50px"></div>
+    </div>
+}
+<a href="../Product?discount=Hàng+Giảm+Giá" class="linkList btn">Xem Tất Cả</a>

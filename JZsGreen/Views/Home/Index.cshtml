@@ -1,0 +1,61 @@
+﻿@model IEnumerable<JZsGreen.Models.Product>
+
+@{
+    ViewData["Title"] = "Trang Chủ";
+    int count = 0;
+}
+<div class="container">
+    @{
+        await Html.RenderPartialAsync("ProductDisCountView");
+    }
+    <div style="height:10px"></div>
+    <img src="~/images/fixed/slide01.png" width="100%" style="opacity:0.8" />
+    <div style="height:10px"></div>
+    <div class="body-right">
+            <div class="title-discount">HÀNG MỚI</div>
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-3 row-cols-lg-3 row-cols-xl-6 g-4 g-2">
+            @foreach (var item in Model!.Where(e => e.discount < 1).OrderByDescending(e=>e.dateCreated))
+            {
+                count++;
+                @if (count < 7)
+                {
+                        <div class="col-md-4">
+                            <a id="card-pro" href="/SanPham/@item.Id" title="@item.name" data-id="@item.Id">
+                                @for (int i = 0; i < 1; i++)
+                                {
+                                    <img src="/images/products/@item.images![i].fileName" class="card-img-top" style="padding:25px" alt="Sản phẩm">
+
+                                }
+                                <div class="card-body" style="padding: 0">
+                                    <h5 class="card-title">@item.name</h5>
+                                    <div>@item.summary</div>
+                                </div>
+                                <div class="price">
+
+                                    <strong style="color:red;"><span class="vnd">₫</span>@Html.DisplayFor(model => @item.totalPrice)</strong>
+                                </div>
+                                <div class="hide"></div>
+                            </a>
+                        @if (!User.IsInRole("Admin"))
+                        {
+                            <a id="addcart" data-id="@item.Id" class="btn select-order @item.Id" style="width:100%; margin-top:8px;">CHỌN MUA</a>
+                            <div id="activeCart" data-id="@item.Id" class="col">
+                                <a class="minus updatecartitem" data-productid="@item.Id">-</a>
+                                <input type="text" class="itemCount" style="width:50%; background:white; border:none; font-size:18px; text-align:center; padding:0;" disabled id="@($"quantity-{item.Id}")" />
+                                <a class="plus updatecartitem" data-productid="@item.Id">+</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="btn select-order @item.Id" style="width:100%; margin-top:8px;">CHỌN MUA</a>
+                        }
+                        </div>
+                   
+                }
+            }
+        </div>
+        <div style="height:50px">
+        </div>
+    </div>
+    <a asp-controller="Product" class="linkList btn" asp-action="Index">Xem Tất Cả</a>
+</div>

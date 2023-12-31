@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" type="image/x-icon" href="~/images/fixed/logoJZ.png">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/JZsGreen.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/detail.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/bill.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/DetailReadMore.js" asp-append-version="true"></script>
+    <script src="~/js/ApiTinyMCE.js" asp-append-version="true"></script>
+    <script src="~/js/ProductLoad.js" asp-append-version="true"></script>
+    <script src="~/js/BillLoad.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <script asp-append-version="true" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script asp-append-version="true" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+</head>
+<body class="bg-white">
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0" style="background: #198754;">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-5 d-none d-sm-inline text-center"></span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link align-middle px-0">
+                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Trang Chủ</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-area="Admin" asp-controller="Home" class="nav-link align-middle px-0">
+                                <i class="fs-4 bi-bar-chart"></i> <span class="ms-1 d-none d-sm-inline">Thống Kê</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-area="Admin" asp-controller="User" class="nav-link align-middle px-0">
+                                <i class="fs-4 bi-people-fill"></i> <span class="ms-1 d-none d-sm-inline">Người Dùng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-area="Admin" asp-controller="Bills" class="nav-link align-middle px-0">
+                                <i class="fs-4 bi-bag-check-fill"></i> <span class="ms-1 d-none d-sm-inline">Quản Lý Đơn Hàng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-area="Admin" asp-controller="Products" class="nav-link align-middle px-0">
+                                <i class="fs-4 bi-boxes"></i> <span class="ms-1 d-none d-sm-inline">Quản Lý Sản Phẩm</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Quản Lý Danh Mục</span>
+                            </a>
+                            <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a asp-action="Index" asp-area="Admin" asp-controller="Categories" class="nav-link px-0"><i class="fs-4 bi-inbox"></i><span class="d-none d-sm-inline"> Danh Mục Lớn</span></a>
+                                </li>
+                                <li>
+                                    <a asp-action="Index" asp-area="Admin" asp-controller="CategoryChilds" class="nav-link px-0"><i class="fs-4 bi-inboxes"></i><span class="d-none d-sm-inline"> Danh Mục Nhỏ</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <hr />
+                    <div class="dropdown pb-4">
+                        <div class="nav-item">
+                            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="nav-link fw-bold text-white align-middle px-0">
+                                <i class="fs-4 bi-person"></i> <span class="ms-1 d-none d-sm-inline">Thông Tin Cá Nhân</span>
+                            </a>
+                        </div>
+                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button style="color:white; font-weight:bold; border:none; background:transparent" type="submit" class="nav-link px-0 align-middle"><i class="fs-4 bi-box-arrow-left"></i><span class="ms-1 d-none d-sm-inline"> Đăng xuất</span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col py-3">
+                @RenderBody()
+            </div>
+        </div>
+        @await RenderSectionAsync("Scripts", required: false)
+        @{
+            //   await Html.RenderPartialAsync("_AuthScriptsPartial");
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    </div>
+</body>
+</html>
+<style>
+    body {
+        margin: 0 !important;
+    }
+
+    #menu li a {
+        color: white;
+        font-weight: bold;
+    }
+
+    h1 {
+        text-align: center;
+    }
+</style>

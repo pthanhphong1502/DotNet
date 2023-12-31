@@ -1,0 +1,116 @@
+﻿@model JZsGreen.Models.Bill
+
+@{
+    ViewData["Title"] = "Chi Tiết Hóa Đơn";
+    int x = 1;
+}
+
+
+<main>
+    <h1 class="text-center">Hóa Đơn Của @Model.phone</h1>
+    <div class="container bg-white" id="bill">
+        <div class="row">
+            <div class="col">
+                <table class="table table-bordered">
+                    <caption style="caption-side:top">
+                        <h2>Thông tin hóa đơn</h2>
+                    </caption>
+                    <tr>
+                        <th class="text-nowrap">Ngày lập</th>
+                        <td>@Html.DisplayFor(e=>e.date)</td>
+                    </tr>
+                    <tr class="text-nowrap">
+                        <th>Khách hàng</th>
+                        <td>@Model.fullName</td>
+                    </tr>
+                    <tr>
+                        <th>Địa chỉ</th>
+                        <td>@Html.DisplayFor(e=>e.address)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-nowrap">Trạng Thái</th>
+                        <td>
+                            @switch (Model.payment)
+                            {
+                                case 0:
+                                    <p>Chờ xác nhận</p>
+                                    break;
+                                case 1:
+                                    <p>Đã xác nhận</p>
+                                    break;
+                                case 2:
+                                    <p>Đang Giao</p>
+                                    break;
+                                case 3:
+                                    <p>Đã Thanh Toán</p>
+                                    break;
+                                case 4:
+                                    <p>Đã hủy</p>
+                                    break;
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col">
+                <table class="table table-bordered">
+                    <caption style="caption-side:top">
+                        <h2>Chi tiết hóa đơn</h2>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Hình Ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.detailsOrders!)
+                        {
+                            <tr>
+                                <td>@x.ToString()</td>
+                                <td><img src="~/images/products/@item.product!.images![0].fileName" height="50" /></td>
+                                <td>@item.product!.name</td>
+                                <td>@item.quantity</td>
+                                <td>@Html.DisplayFor(model=> item.product.price)</td>
+                                <td>@Html.DisplayFor(model=> item.product.totalPrice)</td>
+                            </tr>
+                            x++;
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="fw-bold">Thành Tiền</td>
+                            <td colspan="2">@Html.DisplayFor(model=> model.price) VNĐ</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="fw-bold">Tiền Vận Chuyển</td>
+                            <td colspan="2">30,000 VNĐ</td>
+                        </tr>
+                        @if(Model.percentDiscount > 0)
+                        {
+                            <tr>
+                                <td colspan="4" class="fw-bold">Khuyến Mãi</td>
+                                <td colspan="2">@Html.DisplayFor(model=> model.percentDiscount)%</td>
+                            </tr>
+                        }
+                        @if(Model.point > 0)
+                        {
+                            <tr>
+                                <td colspan="4" class="fw-bold">Điểm sử dụng</td>
+                                <td colspan="2">@Html.DisplayFor(model=> model.point) Điểm</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td colspan="4" class="fw-bold">Tổng Hóa Đơn</td>
+                            <td colspan="2">@Html.DisplayFor(model=> model.totalPrice) VNĐ</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>

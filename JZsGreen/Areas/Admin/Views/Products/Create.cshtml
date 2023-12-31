@@ -1,0 +1,94 @@
+﻿@model JZsGreen.Models.Product
+
+@{
+    ViewData["Title"] = "Thêm Sản Phẩm";
+}
+
+<div style="padding:50px; ">
+    <h1>Thêm Sản Phẩm</h1>
+
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row mb-3">
+            <div class="col-sm-10">
+                <input asp-for="Id" hidden class="form-control" />
+            </div>
+            <span asp-validation-for="Id" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="name" class=" col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="name" class="form-control" />
+            </div>
+            <span asp-validation-for="name" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="price" class=" col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="price" class="form-control" />
+            </div>
+            <span asp-validation-for="price" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="quantity" class=" col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="quantity" class="form-control" />
+            </div>
+            <span asp-validation-for="quantity" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="unit" class=" col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="unit" class="form-control" />
+            </div>
+            <span asp-validation-for="unit" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="discount" class=" col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="discount" class="form-control" />
+            </div>
+            <span asp-validation-for="discount" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="summary" class=" col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="summary" class="form-control" />
+            </div>
+            <span asp-validation-for="summary" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="Category!.name" class=" col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <select asp-for="categoryId" class="form-control" asp-items="ViewBag.categoryID"></select>
+            </div>
+            <span asp-validation-for="categoryId" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label class=" col-sm-2 col-form-label">Chọn hình ảnh</label>
+            <div class="col-sm-10">
+                <input required asp-for="files" class="form-control" multiple />
+            </div>
+            <span asp-validation-for="files" class="text-danger"></span>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="description" class=" col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <textarea id="basic-example" asp-for="description"></textarea>
+            </div>
+            <span asp-validation-for="description" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-3">
+            <input type="submit" value="Thêm Sản Phẩm" class="btn btn-primary" />
+        </div>
+    </form>
+
+    <a asp-action="Index">Quay về trang danh sách</a>
+
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

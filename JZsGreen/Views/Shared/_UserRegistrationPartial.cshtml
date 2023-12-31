@@ -1,0 +1,42 @@
+﻿@model JZsGreen.Models.RegistrationModel
+
+<div class="modal-dialog modal-dialog-centered" tabindex="-1" role="document">
+    <div class="modal-dialog row d-flex justify-content-center align-items-center" style="width:500px">
+        <div class="modal-content" style="border-radius:16px">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Đăng Ký</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="padding: 30px;">
+                <div id="alert_placeholder_register">
+                </div>
+                <form id="UserRegistrationForm" name="UserRegistrationForm" asp-controller="UserAuth" asp-action="RegisterUser">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="RegistrationInValid">
+                    <div class="form-group row">
+                        <input asp-for="Email" placeholder="Email" class="form-control my-2">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <input asp-for="Password" required placeholder="Mật khẩu" class="form-control my-2">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <input asp-for="ConfirmPassword" required placeholder="Xác nhận mật khẩu" class="form-control my-2">
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <input asp-for="FullName" required placeholder="Họ tên" class="form-control my-2">
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <input asp-for="PhoneNumber" required pattern="[0-9]{10}" minlength="10" maxlength="10" placeholder="Số Điện Thoại" class="form-control my-2">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <input asp-for="AcceptUserAgreement" class="form-check-input" checked hidden>
+                </form>
+            </div>
+            <button id="register" name="register" type="button" class="btn btn-primary" style="margin:25px">Tạo Tài Khoản</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,140 @@
+﻿@model IEnumerable<JZsGreen.Models.Product>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@{
+    
+    ViewData["Title"] = ViewData["GetTitle"] == null ? "Tất Cả Sản Phẩm" : "Mặt Hàng " + ViewData["GetTitle"];
+}
+<div style="height:20px;"></div>
+<div class="container">
+    <div class="row g-3">
+        <div class="col-md-3">
+            @{
+                await Html.RenderPartialAsync("SideBar");
+            }
+        </div>
+        @if (Model.Count() != 0)
+        {
+            <div class="col-md-9 body-right" style="padding:20px;">
+                <div class="row home-header title-discount">
+                    <div class="col">
+                        @if (ViewData["GetTitle"] == null)
+                        {
+                            if (ViewData["GetDiscount"] == null)
+                            {
+                                <h4>TẤT CẢ SẢN PHẨM</h4>
+                            }
+                            else
+                            {
+                                <h4>HÀNG GIẢM GIÁ</h4>
+                            }
+                        }
+                        else
+                        {
+                            if (ViewData["GetDiscount"] == null)
+                            {
+                                <h4>@ViewData["GetTitle"]!.ToString()!.ToUpper()</h4>
+                            }
+                            else
+                            {
+                                <h4>@ViewData["GetTitle"]!.ToString()!.ToUpper() (GIẢM GIÁ)</h4>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 g-4 g-2">
+                    @foreach (var item in Model)
+                    {
+                        @if (item.isActive == true)
+                        {
+                            <div class="col-md-4">
+                                <a id="card-pro" href="/SanPham/@item.Id" title="@item.name" data-id="@item.Id">
+                                    @for (int i = 0; i < 1; i++)
+                                    {
+                                        <img src="/images/products/@item.images![i].fileName" class="card-img-top" style="padding:25px" alt="Sản phẩm">
+                                        if (item.discount != 0)
+                                        {
+                                            <div class="product-discount">-@item.discount%</div>
+                                        }
+                                    }
+                                    <div class="card-body" style="padding: 0">
+                                        <h5 class="card-title">@item.name</h5>
+                                        <div>@item.summary</div>
+                                    </div>
+                                    <div class="price">
+                                        @if (item.discount != 0)
+                                        {
+                                            <span class="price-undiscounted"><span class="vnd">₫</span>@Html.DisplayFor(model=>item.price)</span>
+                                        }
+                                        <strong style="color:red;"><span class="vnd">₫</span>@Html.DisplayFor(model => item.totalPrice)</strong>
+                                    </div>
+                                    <div class="hide"></div>
+                                </a>
+                                @if (!User.IsInRole("Admin"))
+                                {
+                                    <a id="addcart" data-id="@item.Id" class="btn select-order @item.Id" style="width:100%; margin-top:8px;">CHỌN MUA</a>
+                                    <div id="activeCart" data-id="@item.Id" class="col">
+                                        <a class="minus updatecartitem" data-productid="@item.Id">-</a>
+                                        <input type="text" class="itemCount" style="width:50%; background:white; border:none; font-size:18px; text-align:center; padding:0;" disabled id="@($"quantity-{item.Id}")" />
+                                        <a class="plus updatecartitem" data-productid="@item.Id">+</a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <a class="btn select-order @item.Id" style="width:100%; margin-top:8px;">CHỌN MUA</a>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4">
+                                <a id="card-pro" href="/SanPham/@item.Id" title="@item.name">
+                                    @for (int i = 0; i < 1; i++)
+                                    {
+                                        <img src="/images/products/@item.images![i].fileName" class="card-img-top" style="padding:25px" alt="Sản phẩm">
+                                        if (item.discount != 0)
+                                        {
+                                            <div class="product-discount">-@item.discount%</div>
+                                        }
+                                    }
+                                    <div class="card-body" style="padding: 0">
+                                        <h5 class="card-title">@item.name</h5>
+                                        <div>@item.summary</div>
+                                    </div>
+                                    <div class="price">
+                                        @if (item.discount != 0)
+                                        {
+                                            <span class="price-undiscounted"><span class="vnd">₫</span>@Html.DisplayFor(model=>item.price)</span>
+                                        }
+                                        <strong style="color:red;"><span class="vnd">₫</span>@Html.DisplayFor(model => item.totalPrice)</strong>
+                                    </div>
+                                    <div class="hide"></div>
+                                </a>
+                                <a id="" class="btn" style="width:100%; margin-top:8px; opacity:0.5; border:1px solid black">HẾT HÀNG</a>
+                            </div>
+                        }
+                    }
+                </div>
+                <div style="height:50px">
+                </div>
+                @Html.PagedListPager((IPagedList) Model, page => Url.Action("Index","Product",new { page,
+            searchName= @ViewData["GetData"],
+            id = @ViewData["GetTitle"],
+            discount = ViewData["GetDiscount"]}),
+            new X.PagedList.Web.Common.PagedListRenderOptions{
+            DisplayLinkToIndividualPages = true,
+            DisplayPageCountAndCurrentLocation = false,
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] {"page-link"}
+            })
+            </div>
+        }
+        else
+        {
+            <div class="col-md-9 body-right">
+                <br />
+                <h1 class="text-center">Sản phẩm hiện chưa có trên hệ thống</h1>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,142 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@model List<JZsGreen.Models.CartItem>
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager;
+@{
+    ViewData["Title"] = "Thanh Toán";
+}
+<script src="~/js/ApiCity.js" asp-append-version="true"></script>
+
+<form asp-controller="Cart" asp-action="CheckOut" class="card" id="cart-pro">
+    <div class="row">
+        <div class="col-md-7 cart">
+            <div class="title">
+                <div class="row">
+                    <div class="col"><h4><b>Thông Tin Đơn Hàng</b></h4></div>
+                </div>
+            </div>
+            @foreach (var cartitem in Model)
+            {
+                <div class="row border-top border-bottom">
+                    <div class="row main align-items-center">
+                        <div class="col-2"><img class="img-fluid" src="/images/products/@cartitem.product!.images![0].fileName"></div>
+                        <div class="col-5">
+                            <div class="row text-muted">@cartitem.product.Category!.name</div>
+                            <div class="row">@cartitem.product.name</div>
+                        </div>
+                        <div class="col-1" style="height:5px;">
+                            <input type="text" class="itemCount" style="width:30px; text-align:center; padding:0; border-radius:6px;" disabled asp-for="@cartitem.quantity" id="@($"quantity-{cartitem.product.Id}")" />
+                        </div>
+
+                        <div class="col-4">
+                            <div style="float:right;">
+                                <span style="text-decoration:line-through" class="row text-muted">@Html.DisplayFor(e=>cartitem.product.price)₫</span>
+                                <strong class="row">
+                                    @Html.DisplayFor(e=>cartitem.product.totalPrice)₫
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <br />
+            <h5>Số Lượng: <strong>@Model.Count()</strong></h5>
+            <h5>Khuyến Mãi: <strong id="discountVoucher">0%</strong></h5>
+            <h5>Thành Tiền: <strong id="totalpro"></strong></h5>
+            <h5>Tiền Vận Chuyển: <strong>30.000 ₫</strong></h5>
+            <h4>Tổng Hóa Đơn: <strong id="totalBill">0</strong></h4>
+        </div>
+        <div class="col-md-5 summary">
+            <div><h5><b>Thông Tin Thanh Toán</b></h5></div>
+            <hr>
+            @if (!SignInManager.IsSignedIn(User))
+            {
+                <div class="row">
+                    <div class="col">
+                        <p>Họ Tên</p>
+                        <input type="text" pattern="[a-zA-Z\]*" minlength="2" maxlength="32" size="32" id="fullname" name="fullname" required class="form-control" placeholder="Nhập họ tên của bạn" />
+                    </div>
+                    <div class="col">
+                        <p>Số Điện Thoại</p>
+                        <input id="phone" pattern="[0-9]{10}" minlength="10" maxlength="10" name="phone" required type="tel" class="form-control" placeholder="Nhập số điện thoại của bạn" />
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col">
+                        <p>Họ Tên</p>
+                        <input value="@UserManager.GetUserAsync(User).Result?.fullName" disabled class="form-control" placeholder="Nhập họ tên của bạn" />
+                        <input id="fullname" name="fullname" required value="@UserManager.GetUserAsync(User).Result?.fullName" hidden class="form-control" placeholder="Nhập họ tên của bạn" />
+                    </div>
+                    <div class="col">
+                        <p>Số Điện Thoại</p>
+                        <input value="@UserManager.GetUserAsync(User).Result?.PhoneNumber" disabled class="form-control" placeholder="Nhập số điện thoại của bạn" />
+                        <input id="phone" name="phone" required value="@UserManager.GetUserAsync(User).Result?.PhoneNumber" hidden class="form-control" placeholder="Nhập số điện thoại của bạn" />
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="col">
+                    <p>Địa Chỉ Nhà</p>
+                    <input id="address" name="address" required class="form-control" placeholder="Nhập số nhà và tên đường" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Tỉnh Thành</p>
+                    <select name="city" id="city" class="form-control" required>
+                        <option value="" selected>Chọn tỉnh thành</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <p>Quận Huyện</p>
+                    <select name="district" id="district" class="form-control" required>
+                        <option value="" selected>Chọn quận huyện</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <p>Phường Xã</p>
+                    <select name="ward" id="ward" class="form-control" required>
+                        <option value="" selected>Chọn phường xã</option>
+                    </select>
+                </div>
+                <div>
+                </div>
+                <h2 id="result" style="display:none">Cái này là trả về địa chỉ nè (nhớ get nó cho nhanh)</h2>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Phương Thức Thanh Toán</p>
+                    <select class="form-control">
+                        <option selected value="Thanh Toán khi nhận hàng">Thanh toán khi nhận hàng</option>
+                        <option value="Thanh Toán qua Paypal">Thanh toán qua Momo</option>
+                        <option value="Thanh Toán qua Paypal">Thanh toán qua Paypal</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p>Mã Khuyến Mãi (Nếu Có)</p>
+                    <input id="voucherid" name="voucherid" class="form-control" placeholder="Mời bạn nhập mã khuyến mãi" />
+                </div>
+                <div class="col-2" id="voucher-btn">
+                    <div class="btn" style="font-size:1rem; margin:0;"><i class="fa fa-send-o"></i></div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="voucher-price"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <a href="/cart" class="btn col" style="background:white; color:black;"><i class="fa fa-reply"></i> Quay Về</a>
+                <button class="btn col">Thanh Toán</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script src="~/js/apiCity.js" asp-append-version="true"></script>

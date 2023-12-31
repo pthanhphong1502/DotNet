@@ -1,0 +1,160 @@
+body {
+    margin: 0;
+    background: #e9edf0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.page-link {
+    color: #198754;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: block;
+    transition: top 0.3s;
+    font-weight: bold;
+}
+
+    #navbar a {
+        color: white;
+        border-radius: 6px;
+        padding: 10px;
+        margin: 5px;
+    }
+
+        #navbar a:hover {
+            background-color: #106940;
+            border-radius: 6px;
+        }
+
+.btn-logout {
+    color: white;
+    border-radius: 6px;
+    padding: 2px 5px 2px 5px;
+    margin: 4px 3px 0px 8px;
+    font-weight: bold;
+}
+
+    .btn-logout:hover {
+        background-color: #106940;
+        border-radius: 6px;
+    }
+
+html {
+    font-size: 14px;
+}
+
+.container {
+    transition: 1s;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn-primary {
+    background: #198754 !important;
+    color: white;
+    border: none;
+}
+
+.active {
+    color: white !important;
+    background: #198754 !important;
+}
+
+#update-isActive {
+    background: transparent;
+    border: none;
+    padding: 3px;
+    margin-left: 3px;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.page-item.active .page-link {
+    background: #198754;
+}
+
+.pagination {
+    align-items: center;
+    justify-content: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+thead {
+    color: #056a3bb3;
+}
+
+th, td {
+    text-align: left;
+}
+thead tr:first-child {
+    background: #198754 !important;
+    color: white;
+}
+tr:nth-child(odd) {
+    background-color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #ffffffd4;
+}
+
+div.dataTables_filter input {
+    border-radius: 10px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    color: black;
+    background: white !important;
+    padding: 5px;
+    border: none;
+    border-radius: 20px;
+}
+
+#example_filter {
+    margin-bottom: 20px;
+}
+
+#example tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#example {
+    border: 0.1px solid #e3e3e3;
+}
+
+    #example tr:hover {
+        background: #e3e3e3;
+    }
+
+       
+        #example tr:nth-child(old) {
+            background-color: #198754;
+        }
+
+@media only screen and (min-width: 200px) and (max-width: 640px) {
+    #example_filter {
+        float: left;
+    }
+}

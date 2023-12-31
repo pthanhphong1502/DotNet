@@ -1,0 +1,63 @@
+﻿@model List<JZsGreen.Models.CartItem>
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+    ViewData["Title"] = "Giỏ Hàng";
+}
+@if (Model.Count > 0)
+{
+    <div class="card" id="cart-pro">
+        <div class="row">
+            <div class="col-md cart">
+                <div class="title">
+                    <div class="row">
+                        <div class="col"><h4><b>Giỏ Hàng của bạn</b></h4></div>
+                    </div>
+                </div>
+                @foreach (var cartitem in Model)
+                {
+                    <div class="row border-top border-bottom">
+                        <div class="row main align-items-center">
+                            <div class="col-2"><img class="img-fluid" src="/images/products/@cartitem.product!.images![0].fileName"></div>
+                            <div class="col-4">
+                                <div class="row text-muted">@cartitem.product.Category!.name</div>
+                                <div class="row">@cartitem.product.name</div>
+                            </div>
+                            <div class="col-3" style="height:15px;">
+                                <a style="cursor:pointer;" class="minus updatecartitem" data-productid="@cartitem.product.Id">-</a>
+                                <input type="text" class="itemCount" style="width:25px; text-align:center; padding:0;" disabled asp-for="@cartitem.quantity" id="@($"quantity-{cartitem.product.Id}")" />
+                                <a style="cursor:pointer;" class="plus updatecartitem" data-productid="@cartitem.product.Id">+</a>
+                            </div>
+                            <div class="col-3">
+                                <input type="number" id="@($"price-{cartitem.product.Id}")" value="@cartitem.product.totalPrice" hidden />
+                                <div class="col" style="height:10px;">
+                                    <span style="text-decoration:line-through" class="row text-muted">@Html.DisplayFor(e=>cartitem.product.price)₫</span>
+                                    <strong class="row">
+                                        @Html.DisplayFor(e=>cartitem.product.totalPrice)₫
+                                    </strong>
+                                </div>
+                                <a class="close row" asp-route="removecart" asp-route-productid="@cartitem.product.Id">&#10005;</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div style="height:50px;"></div>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <h5>Số Điểm Hiện Tại Của Bạn: <strong>@UserManager.GetUserAsync(User).Result?.point Điểm</strong></h5>
+                }
+                <h5>Số Lượng: <strong>@Model.Count()</strong></h5>
+                <h4>Thành Tiền: <strong id="totalpro"></strong></h4>
+              
+                <a class="btn" href="@Url.Action("CartCheckOut","Cart")" style="background-color:#198754">Thanh Toán</a>
+                <h6 style="float:right; margin-top:5px;">Bạn muốn<a href="../" style="font-weight:bold;color:dodgerblue;">mua thêm hàng?</a></h6>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p class="alert alert-danger">Giỏ hàng trống</p>
+}

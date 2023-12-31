@@ -1,0 +1,35 @@
+﻿@model JZsGreen.Models.CategoryChild
+
+@{
+    ViewData["Title"] = "Cập Nhật";
+}
+
+<div style="padding:50px;">
+    <h1>Cập Nhật Danh Mục Nhỏ</h1>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="name" class="control-label"></label>
+            <input asp-for="name" class="form-control" />
+            <span asp-validation-for="name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Danh Mục Lớn</label>
+            <select asp-for="categoryId" class="form-control" asp-items="ViewBag.categoryId"></select>
+            <span asp-validation-for="categoryId" class="text-danger"></span>
+        </div>
+        <br/>
+        <div class="form-group">
+            <input type="submit" value="Cập Nhật" class="btn btn-primary w-100" />
+        </div>
+    </form>
+    <hr />
+    <div>
+        <a asp-action="Index">Quay về trang trang danh sách</a>
+    </div>
+
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,103 @@
+﻿@model JZsGreen.Models.Product
+
+@{
+    ViewData["Title"] = Model.name;
+    int? x = 0;
+}
+<a href="../" style="font-size:1rem">Trang Chủ</a> > <a href="../@Model.Category!.name" style="font-size:1rem">@Model.Category.name</a>
+<div class="container bg-white p-5" style="border-radius:5px;">
+    <div class="row">
+        <div class="col-md-5">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach (var item in Model.images!)
+                    {
+                        x++;
+                        var active = x == 1 ? "active" : "";
+                        <div class="carousel-item @active">
+                            <img src="/images/products/@item.fileName" class="d-block w-100" alt="Ảnh sản phẩm">
+                        </div>
+                    }
+                </div>
+                @if (Model.images.Count != 1)
+                {
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Trước</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Sau</span>
+                    </button>
+                }
+            </div>
+        </div>
+        <div class="col-md-7">
+            <h2>
+                @if (Model.discount != 0)
+                {
+                    <span class="discount-detail">@Model.discount%</span>
+                }
+                @Html.DisplayFor(model => Model.name)
+            </h2>
+            <p>
+                @Html.DisplayFor(model => Model.summary)
+            </p>
+            <div class="price">
+                @if (Model.discount != 0)
+                {
+                    <span class="price-undiscounted"><span class="vnd">₫</span>@Html.DisplayFor(model=>Model.price)</span>
+                }
+                <strong style="color:red;"><span class="vnd">₫</span>@Html.DisplayFor(model => Model.totalPrice)</strong>
+            </div>
+            <br />
+            @if(Model.isActive == true)
+            {
+                if (!User.IsInRole("Admin"))
+                {
+                     <a id="addcart" data-id="@Model.Id" class=" btn order-product">CHỌN MUA</a>
+                <div id="activeCart" style="width:50%" data-id="@Model.Id">
+                    <a class="minus updatecartitem" data-productid="@Model.Id">-</a>
+                    <input type="text" class="itemCount" style="width:50%; background:white; border:none; font-size:18px; text-align:center; padding:0;" disabled id="@($"quantity-{Model.Id}")" />
+                    <a class="plus updatecartitem" data-productid="@Model.Id">+</a>
+                    </div>
+                }
+                else
+                {
+                    <a  class=" btn order-product">CHỌN MUA</a>
+                }
+
+            }
+            else
+            {
+                <strong>Hiện Tại Sản Phẩm Đã Hết</strong>
+            }
+        </div>
+    </div>
+    <div>
+    </div>
+</div>
+<br />
+<div class="container bg-white p-5 col">
+    <div style="word-wrap: break-word">
+        <h2><strong style="color:#198754; margin-right:5px;">l</strong>Thông Tin Sản Phẩm</h2>
+        <hr />
+        @if (Model.description!.Length < 350)
+        {
+            <ul class="description-pro">
+                <li>@Html.Raw(Model.description)</li>
+            </ul>
+        }
+        else
+        {
+            <div class="description-pro">
+                <span id="ReadMore">
+                    @Html.Raw(Model.description.Substring(0,300))<span id="dots">...</span>
+                </span>
+            </div>
+            <span id="ReadLess" style="display:none;">@Html.Raw(Model.description)</span>
+
+            <button type="button" onclick="myFunction()" id="myBtn" style="width:100%; border:1px solid black" class="btn">Đọc Thêm</button>
+        }
+    </div>
+</div>

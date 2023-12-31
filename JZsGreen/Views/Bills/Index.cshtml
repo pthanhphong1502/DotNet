@@ -1,0 +1,105 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@model IEnumerable<JZsGreen.Models.Bill>
+
+@{
+    ViewData["Title"] = "Hóa Đơn";
+}
+
+@if (Model.Count() != 0)
+{
+    <h1 class="text-center">Đơn hàng của bạn</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.totalPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.payment)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totalPrice)
+                    </td>
+                    <td>
+                        @switch (item.payment)
+                        {
+                            case 0:
+                                <p>Chờ xác nhận</p>
+                                break;
+                            case 1:
+                                <p>Đã xác nhận</p>
+                                break;
+                            case 2:
+                                <p>Đang Giao</p>
+                                break;
+                            case 3:
+                                <p>Đã Thanh Toán</p>
+                                break;
+                            case 4:
+                                <p>Đã hủy</p>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @if (SignInManager.IsSignedIn(User) == true)
+                        {
+                            if (item.payment == 0 && UserManager.GetUserAsync(User).Result!.point > 0)
+                            {
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Áp dụng điểm
+                                </button>
+
+                                <div class="modal fade" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Điểm hiện tại của bạn là: <strong>@UserManager.GetUserAsync(User).Result!.point</strong> Điểm</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Khi bạn áp dụng điểm lần này, điểm của bạn sẽ về <strong>0</strong>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form asp-action="ActivePoint" asp-route-id="@item.billID">
+                                                    <button class="btn bg-danger" style="color:white">Áp dụng</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <a class="btn bg-dark" style="color:white" asp-action="Details" asp-route-id="@item.billID">Chi Tiết</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>Chưa có thông tin</h1>
+}

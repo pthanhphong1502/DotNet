@@ -1,0 +1,71 @@
+﻿@model IEnumerable<JZsGreen.Models.User>
+@{
+    ViewData["Title"] = "Người Dùng";
+}
+<h1>Thông Tin Người Dùng</h1>
+<table id="example" class="table bg-white" style="width:100%">
+    <thead>
+        <tr class="text-nowrap">
+            <th>
+                @Html.DisplayNameFor(model => model.dateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fullName)
+            </th>
+            <th>
+                Số Điện Thoại
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.point)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Where(e => e.Email != "admin@gmail.com"))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dateCreated)
+                </td>
+                <td>
+                    @if (item.LockoutEnabled == true && item.LockoutEnd > DateTime.Now)
+                    {
+                        @Html.DisplayFor(modelItem => item.Email)
+                        <div>(Đã Khóa đến @item.LockoutEnd.Value.Date)</div>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Email)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.point)
+                </td>
+                <td class="text-nowrap">
+                    @if (item.LockoutEnabled == true && item.LockoutEnd > DateTime.Now)
+                    {
+                        <form asp-action="unLock" asp-route-id="@item.Id">
+                            <button class="btn btn-primary w-100" style="color:white">Mở Khóa</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="lockOut" asp-route-id="@item.Id">
+                            <button class="btn bg-danger w-100" style="color:white">Khóa Tài Khoản</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

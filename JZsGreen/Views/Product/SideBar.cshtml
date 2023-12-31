@@ -1,0 +1,28 @@
+﻿@{
+
+    IEnumerable<Category> list = (IEnumerable<Category>) ViewData["GetPro"]!;
+}
+<div id="activeBarPro" class="float-end border-0 btn w-100">
+    <div>Tìm Kiếm Theo Danh Mục <i class="bi-arrow-down-short"></i></div>
+</div>
+<div id="bar-pro">
+    <h3 class="text-center">DANH MỤC</h3>
+    <a href="/Product/Index" class="category-dropitem" style="white-space:pre-wrap !important">Tất Cả Sản Phẩm</a>
+    <form asp-controller="Product" asp-action="Index" method="get" class="discount-menu" style="display:contents">
+        <input type="submit" value="Hàng Giảm Giá" name="discount" class="category-dropitem" style="white-space:pre-wrap !important" />
+    </form>
+
+    @foreach (var item in list)
+    {
+        <div class="dropdown-divider"></div>
+        <h5 class="dropdown-header" style="white-space:pre-wrap !important">@item.name</h5>
+        @foreach (var item1 in item.CategoryChild!)
+        {
+            <a class="category-dropitem" asp-action="Index" asp-route-id="@item1.name">@item1.name</a>
+        }
+    }
+    <br />
+</div>
+<div id="unActiveBarPro" class="border-0 btn w-100">
+    <div>Ẩn Danh Mục<i class="bi-arrow-up-short"></i></div>
+</div>

@@ -1,0 +1,168 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@model IEnumerable<JZsGreen.Models.Bill>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Hóa Đơn";
+}
+
+<div>
+    <h1>Quản Lý Đơn Hàng</h1>
+    <table id="example" class="bg-white table" style="width:100%">
+        <thead>
+            <tr class="text-nowrap">
+                <th>
+                    @Html.DisplayNameFor(model => model.date)
+                </th>
+                <th>
+                    Họ Và Tên
+                </th>
+                <th>
+                    Điện Thoại
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.totalPrice)
+                </th>
+                <th>
+                    Trạng Thái Đơn Hàng
+                </th>
+                <th style="display:none;">
+                  
+                </th>
+                <th style="display:none;">
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.date)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.phone)
+                    </td>
+                    <td>
+                        @if(item.address!.Length < 30)
+                        {
+                            <textarea cols="30" rows="2" class="bg-transparent border-0" disabled>@item.address</textarea>
+                        }else if(item.address!.Length < 65)
+                        {
+                            <textarea cols="30" rows="3" class="bg-transparent border-0" disabled>@item.address</textarea>
+                        }else {
+                            <textarea cols="30" rows="4" class="bg-transparent border-0" disabled>@item.address</textarea>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totalPrice)
+                    </td>
+                    <td style="display:none;">
+                        @item.payment
+                    </td>
+                    <td style="display:none;">
+                        @switch (item.payment)
+                                            {
+                                                case 0:
+                                                    <div>Chưa Xử Lý</div>
+                                                    break;
+                                                case 1:
+                                                    <div>Đã Xác Nhận</div>
+                                                    break;
+                                                case 2:
+                                                    <div>Đang Giao</div>
+                                                    break;
+                                                case 3:
+                                                    <div>Đã Thanh Toán</div>
+                                                    break;
+                                                case 4:
+                                                    <div>Đã Hủy</div>
+                                                    break;
+                                                default:
+                                                    <div>Chưa Xử Lý</div>
+                                                    break;
+                                            }
+                    </td>
+                    <td>
+                        <p>
+                            @switch (item.payment)
+                            {
+                                case 3:
+                                    <input class="form-control" disabled value="Đã Thanh Toán" />
+                                    break;
+                                case 4:
+                                    <input class="form-control" disabled value="Đã Hủy" />
+                                    break;
+                                default:
+                                    <select id="selectActive" data-productid="@item.billID" class="form-control">
+                                        <option selected>
+                                            @switch (item.payment)
+                                            {
+                                                case 0:
+                                                    <div>Chưa Xử Lý</div>
+                                                    break;
+                                                case 1:
+                                                    <div>Đã Xác Nhận</div>
+                                                    break;
+                                                case 2:
+                                                    <div>Đang Giao</div>
+                                                    break;
+                                                case 3:
+                                                    <div>Đã Thanh Toán</div>
+                                                    break;
+                                                case 4:
+                                                    <div>Đã Hủy</div>
+                                                    break;
+                                                default:
+                                                    <div>Chưa Xử Lý</div>
+                                                    break;
+                                            }
+                                        </option>
+                                        @if (item.payment != 0)
+                                        {
+                                            <option value="0">Chưa Xử Lý</option>
+                                        }
+                                        @if (item.payment != 1)
+                                        {
+                                            <option value="1">Đã Xác Nhận</option>
+                                        }
+                                        @if (item.payment != 2)
+                                        {
+                                            <option value="2">Đang Giao</option>
+                                        }
+                                        @if (item.payment != 3)
+                                        {
+                                            <option value="3">Đã Thanh Toán</option>
+                                        }
+                                        @if (item.payment != 4)
+                                        {
+                                            <option value="4">Đã Hủy</option>
+                                        }
+                                    </select>
+                                    break;
+                            }
+                        </p>
+                    </td>
+                    <td>
+                        <a class="btn bg-dark" style="color:white" asp-action="Details" asp-route-id="@item.billID">Xem</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    new DataTable('#example');
+</script>

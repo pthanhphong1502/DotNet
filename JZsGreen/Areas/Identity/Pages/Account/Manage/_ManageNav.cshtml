@@ -1,0 +1,6 @@
+﻿@inject SignInManager<User> SignInManager
+
+<ul class="nav nav-pills flex-column" style="margin-bottom:10px;">
+    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index" style="color:black;">Trang Cá Nhân</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" style="color:black;" asp-page="./ChangePassword">Thay Đổi Mật Khẩu</a></li>
+</ul>
