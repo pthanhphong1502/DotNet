@@ -6,9 +6,11 @@
 Chạy lệnh 
 ```bash
 add-migration "your-comment"
+```
 
 ```bash
 update-database
+```
 
 
 
